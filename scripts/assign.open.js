@@ -8,8 +8,8 @@ const globalWeb3 = this.web3 // Not injected unless called directly via truffle
 
 const defaultOwner = process.env.OWNER
 
-const APM_REGISTRY_FACTORY_ADDRESS = '0x4d2a274262fcdbe68270fe0ea6811a7fa2b640bf'
-const APM_REGISTRY = '0xe68725d87aa896bc5bc35d5cff8e6f26777c758e'
+const APM_REGISTRY_FACTORY_ADDRESS = process.env.APM_REGISTRY_FACTORY_ADDRESS
+const APM_REGISTRY = process.env.APM_REGISTRY_FACTORY_ADDRESS
 
 module.exports = async (
   truffleExecCallback,
