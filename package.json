@@ -16,6 +16,7 @@
     "deploy:matic:ens": "truffle compile && truffle exec --network matic scripts/deploy-test-ens.js",
     "deploy:matic:apm": "truffle compile && truffle exec --network matic scripts/deploy-apm.js",
     "deploy:matic:dao-factory": "truffle compile && truffle exec --network matic scripts/deploy-daofactory.js",
+    "assign-open-role:matic": "truffle compile && truffle exec --network matic scripts/assign.open.js",
     "abi:extract": "truffle-extract --output abi/ --keys abi",
     "bytecode:extract": "truffle-bytecode extract -o bytecode",
     "bytecode:extract:new": "truffle-bytecode extract -o bytecode_new",
