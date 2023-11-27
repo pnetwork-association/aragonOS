@@ -22,7 +22,7 @@ export const deployEns = async (
   const ENSFactory = await _hre.ethers.getContractFactory("ENSFactory");
 
   console.log("Deploying ENSFactory...");
-  const factory = await ENSFactory.deploy();
+  const factory = await (await ENSFactory.deploy()).waitForDeployment();
   console.log("Deployed ENSFactory:", await factory.getAddress());
   const receipt = await (await factory.newENS(owner)).wait(1);
 

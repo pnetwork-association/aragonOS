@@ -34,7 +34,7 @@ export const deployDaoFactory = async (
     );
   } else {
     console.log("Deploying Kernel...");
-    kernelBase = await Kernel.deploy(true); // immediately petrify
+    kernelBase = await (await Kernel.deploy(true)).waitForDeployment(); // immediately petrify
     console.log(`Deployed Kernel: ${await kernelBase.getAddress()}`)
   }
 
@@ -46,7 +46,7 @@ export const deployDaoFactory = async (
     );
   } else {
     console.log("Deploying ACL...");
-    aclBase = await ACL.deploy();
+    aclBase = await (await ACL.deploy()).waitForDeployment();
     console.log(`Deployed ACL: ${await aclBase.getAddress()}`)
   }
 
@@ -65,18 +65,18 @@ export const deployDaoFactory = async (
       );
     } else {
       console.log("Deploying EVMScriptRegistryFactory...");
-      evmScriptRegistryFactory = await EVMScriptRegistryFactory.deploy();
+      evmScriptRegistryFactory = await (await EVMScriptRegistryFactory.deploy()).waitForDeployment();
       console.log(`Deployed EVMScriptRegistryFactory: ${await evmScriptRegistryFactory.getAddress()}`)
     }
   }
   console.log("Deploying DAOFactory...");
-  const daoFactory = await DAOFactory.deploy(
+  const daoFactory = await (await DAOFactory.deploy(
     await kernelBase.getAddress(),
     await aclBase.getAddress(),
     evmScriptRegistryFactory
       ? await evmScriptRegistryFactory.getAddress()
       : ZERO_ADDR
-  );
+  )).waitForDeployment();
   console.log(`Deployed DAOFactory: ${await daoFactory.getAddress()}`)
 
   console.info(`Deployed contracts: {

@@ -66,11 +66,11 @@ const deploy = async (
   console.log("=========");
   console.log("Deploying APM bases...");
 
-  const apmRegistryBase = await APMRegistry.deploy();
+  const apmRegistryBase = await (await APMRegistry.deploy()).waitForDeployment();
   console.log("Deployed APMRegistry:", await apmRegistryBase.getAddress());
-  const apmRepoBase = await Repo.deploy();
+  const apmRepoBase = await (await Repo.deploy()).waitForDeployment();
   console.log("Deployed Repo:", await apmRepoBase.getAddress());
-  const ensSubdomainRegistrarBase = await ENSSubdomainRegistrar.deploy();
+  const ensSubdomainRegistrarBase = await (await ENSSubdomainRegistrar.deploy()).waitForDeployment();
   console.log(
     "Deployed ENSSubdomainRegistrar:",
     await ensSubdomainRegistrarBase.getAddress()
@@ -93,14 +93,14 @@ const deploy = async (
   }
 
   console.log("Deploying APMRegistryFactory...");
-  const apmFactory = await APMRegistryFactory.deploy(
+  const apmFactory = await (await APMRegistryFactory.deploy(
     await daoFactory.getAddress(),
     await apmRegistryBase.getAddress(),
     await apmRepoBase.getAddress(),
     await ensSubdomainRegistrarBase.getAddress(),
     ensAddress,
     ZERO_ADDR
-  );
+  )).waitForDeployment();
   console.log("Deployed APMRegistryFactory:", await apmFactory.getAddress());
 
   console.log(`Assigning ENS name (${labelName}.${tldName}) to factory...`);
@@ -109,15 +109,15 @@ const deploy = async (
     console.log(
       "Transferring name ownership from deployer to APMRegistryFactory"
     );
-    await ens.setOwner(apmNode, await apmFactory.getAddress());
+    await (await ens.setOwner(apmNode, await apmFactory.getAddress())).wait(1);
   } else {
     console.log("Creating subdomain and assigning it to APMRegistryFactory");
     try {
-      await ens.setSubnodeOwner(
+      (await ens.setSubnodeOwner(
         tldHash,
         labelHash,
         await apmFactory.getAddress()
-      );
+      )).wait(1);
     } catch (err) {
       console.error(
         `Error: could not set the owner of '${labelName}.${tldName}' on the given ENS instance`,
