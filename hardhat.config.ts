@@ -22,11 +22,19 @@ const config: HardhatUserConfig = {
   networks: {
     // ... other networks ...
 
-    gnosis: {
-      url: getEnvironmentVariable("GNOSIS_PROVIDER_URL"),
+    xdai: {
+      url: getEnvironmentVariable("XDAI_PROVIDER_URL"),
       accounts: [pk],
     },
   },
+  etherscan: {
+    apiKey: {
+      xdai: getEnvironmentVariable("XDAI_ETHERSCAN_KEY") as string
+    }
+  },
+  sourcify: {
+    enabled: true
+  }
 };
 
 export default config;
